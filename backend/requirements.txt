@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+mysql-connector-python
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+scikit-learn
+pandas
+numpy
+reportlab
+pydantic
+jinja2
