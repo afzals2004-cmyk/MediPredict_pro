@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, Heart, Brain, ArrowRight, Users, TrendingUp, Search } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
@@ -56,24 +56,30 @@ const Home = () => {
         fetchStats();
     }, []);
 
-    // Prepare data for Nivo Bar
-    const diseaseData = stats ? [
-        { disease: 'Diabetes', count: stats.disease_breakdown.Diabetes, color: '#3b82f6' },
-        { disease: 'Heart', count: stats.disease_breakdown['Heart Disease'], color: '#ef4444' },
-        { disease: 'Parkinsons', count: stats.disease_breakdown.Parkinsons, color: '#a855f7' },
-    ] : [];
+    // Memoize chart data preparation to prevent recalculation on every render
+    const diseaseData = useMemo(() => {
+        if (!stats) return [];
+        return [
+            { disease: 'Diabetes', count: stats.disease_breakdown.Diabetes, color: '#3b82f6' },
+            { disease: 'Heart', count: stats.disease_breakdown['Heart Disease'], color: '#ef4444' },
+            { disease: 'Parkinsons', count: stats.disease_breakdown.Parkinsons, color: '#a855f7' },
+        ];
+    }, [stats]);
 
-    // Prepare data for Nivo Line
-    const trendData = stats ? [
-        {
-            id: 'predictions',
-            color: '#a855f7',
-            data: stats.predictions_over_time.labels.map((date, index) => ({
-                x: date,
-                y: stats.predictions_over_time.data[index]
-            }))
-        }
-    ] : [];
+    // Memoize trend data preparation
+    const trendData = useMemo(() => {
+        if (!stats) return [];
+        return [
+            {
+                id: 'predictions',
+                color: '#a855f7',
+                data: stats.predictions_over_time.labels.map((date, index) => ({
+                    x: date,
+                    y: stats.predictions_over_time.data[index]
+                }))
+            }
+        ];
+    }, [stats]);
 
     const theme = {
         background: 'transparent',
@@ -343,7 +349,7 @@ const Home = () => {
     );
 };
 
-const StatCard = ({ icon: Icon, label, value, color, loading }) => {
+const StatCard = React.memo(({ icon: Icon, label, value, color, loading }) => {
     const colorClasses = {
         cyan: {
             bg: 'from-cyan-500/20 to-cyan-600/10',
@@ -394,9 +400,9 @@ const StatCard = ({ icon: Icon, label, value, color, loading }) => {
             <div className={`absolute inset-0 bg-gradient-to-br ${styles.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}></div>
         </div>
     );
-};
+});
 
-const ModelLink = ({ to, name, desc, color }) => {
+const ModelLink = React.memo(({ to, name, desc, color }) => {
     const colorClasses = {
         blue: { dot: 'bg-blue-400', hoverText: 'group-hover:text-blue-300' },
         green: { dot: 'bg-green-400', hoverText: 'group-hover:text-green-300' },
@@ -420,6 +426,6 @@ const ModelLink = ({ to, name, desc, color }) => {
             </div>
         </Link>
     );
-};
+});
 
 export default Home;

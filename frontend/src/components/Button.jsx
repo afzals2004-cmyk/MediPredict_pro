@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Loader2 } from 'lucide-react';
 
-const Button = ({ children, isLoading, variant = 'primary', className, ...props }) => {
+const Button = React.memo(({ children, isLoading, variant = 'primary', className, ...props }) => {
     const baseStyles = "px-6 py-2.5 rounded-lg font-medium transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-95";
 
     const variants = {
@@ -23,6 +23,8 @@ const Button = ({ children, isLoading, variant = 'primary', className, ...props 
             {children}
         </button>
     );
-};
+});
+
+Button.displayName = 'Button';
 
 export default Button;

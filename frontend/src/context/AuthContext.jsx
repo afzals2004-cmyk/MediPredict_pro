@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import api from '../services/api';
 
 const AuthContext = createContext(null);
@@ -7,6 +7,23 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [loading, setLoading] = useState(true);
+
+    // Memoize fetchUser to prevent recreation on every render
+    const fetchUser = useCallback(async () => {
+        try {
+            const response = await api.get('/auth/me');
+            setUser(response.data);
+        } catch (error) {
+            console.error("Failed to fetch user", error);
+            // Don't call logout here to avoid circular dependencies
+            localStorage.removeItem('token');
+            setToken(null);
+            setUser(null);
+            delete api.defaults.headers.common['Authorization'];
+        } finally {
+            setLoading(false);
+        }
+    }, []); // No dependencies needed
 
     useEffect(() => {
         if (token) {
@@ -17,21 +34,9 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
             setLoading(false);
         }
-    }, [token]);
+    }, [token, fetchUser]);
 
-    const fetchUser = async () => {
-        try {
-            const response = await api.get('/auth/me');
-            setUser(response.data);
-        } catch (error) {
-            console.error("Failed to fetch user", error);
-            logout();
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const login = async (email, password) => {
+    const login = useCallback(async (email, password) => {
         const params = new URLSearchParams();
         params.append('username', email);
         params.append('password', password);
@@ -43,21 +48,27 @@ export const AuthProvider = ({ children }) => {
                 }
             });
             const newToken = response.data.access_token;
+
+            // Set header immediately
+            api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+
+            // Fetch user data before updating token state
+            const userResponse = await api.get('/auth/me');
+
+            // Update all state at once to prevent multiple re-renders
+            setUser(userResponse.data);
             localStorage.setItem('token', newToken);
             setToken(newToken);
-
-            // Set header and fetch user immediately to ensure state is ready before navigation
-            api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-            await fetchUser();
+            setLoading(false);
 
             return true;
         } catch (error) {
             console.error("Login failed", error);
             throw error;
         }
-    };
+    }, []);
 
-    const register = async (fullName, email, password) => {
+    const register = useCallback(async (fullName, email, password) => {
         try {
             await api.post('/auth/register', {
                 full_name: fullName,
@@ -69,17 +80,27 @@ export const AuthProvider = ({ children }) => {
             console.error("Registration failed", error);
             throw error;
         }
-    };
+    }, [login]);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('token');
         setToken(null);
         setUser(null);
         delete api.defaults.headers.common['Authorization'];
-    };
+    }, []);
+
+    // Memoize the context value to prevent unnecessary re-renders
+    const value = useMemo(() => ({
+        user,
+        token,
+        login,
+        register,
+        logout,
+        loading
+    }), [user, token, login, register, logout, loading]);
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

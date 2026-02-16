@@ -29,7 +29,7 @@ const Signup = () => {
             console.error("Signup Error Details:", JSON.stringify(err.response?.data, null, 2));
             const errorMessage = err.response?.data?.detail
                 ? (Array.isArray(err.response.data.detail) ? err.response.data.detail.map(e => e.msg).join(', ') : err.response.data.detail)
-                : 'Registration failed. Please try again.';
+                : (err.message || 'Registration failed. Please try again.');
             setError(errorMessage);
         } finally {
             setIsLoading(false);
