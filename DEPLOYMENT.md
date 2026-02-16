@@ -17,22 +17,28 @@ This repository is configured for seamless deployment on Vercel for both the Fro
         *   `VITE_API_URL`: The URL of your deployed backend (see step 3). *For now, you can leave this blank and update it later.*
 4.  Click **Deploy**.
 
-## 3. Deploying the Backend (FastAPI)
+## 3. Deploying the Backend (Recommended: Render)
 
-1.  Go back to Vercel Dashboard and click **"Add New..."** -> **"Project"**.
-2.  Import the **SAME** repository again.
-3.  **Configure Project:**
-    *   **Framework Preset:** Other
-    *   **Root Directory:** Click `Edit` and select `backend`.
-    *   **Environment Variables:**
+**Why Render?**
+Vercel has a strict 250MB size limit for serverless functions, which is too small for Machine Learning applications using `pandas` and `scikit-learn`. Render supports Docker containers, which is perfect for this app.
+
+1.  **Sign Up:** Go to [Render.com](https://render.com) and create an account.
+2.  **New Web Service:** Click **"New +"** and select **"Web Service"**.
+3.  **Connect GitHub:** Connect your GitHub account and select the **MediPredict_pro** repository.
+4.  **Configure Service:**
+    *   **Name:** `medipredict-backend`
+    *   **Root Directory:** `backend` (Important!)
+    *   **Runtime:** Docker
+    *   **Instance Type:** Free (or Starter if you want faster speeds)
+    *   **Environment Variables:** (Add these below)
         *   `DATABASE_URL`: Your MySQL Database Connection String.
         *   `SECRET_KEY`: A secure random string.
-        *   `FRONTEND_URL`: The URL of your deployed Frontend (from Step 2).
-4.  Click **Deploy**.
+        *   `FRONTEND_URL`: The URL of your Vercel Frontend (from Step 2).
+5.  Click **Create Web Service**.
 
 ## 4. Final Connection
 
-1.  Once the Backend is deployed, copy its URL (e.g., `https://medipredict-backend.vercel.app`).
+1.  Once the Render Backend is live, copy its URL (e.g., `https://medipredict-backend.onrender.com`).
 2.  Go to your **Frontend Project Settings** on Vercel.
 3.  Go to **Environment Variables**.
 4.  Add/Update `VITE_API_URL` with the Backend URL (no trailing slash).
