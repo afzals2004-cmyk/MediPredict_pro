@@ -12,7 +12,7 @@ This repository is configured for seamless deployment on Vercel for both the Fro
 2.  Import the **MediPredict_pro** repository.
 3.  **Configure Project:**
     *   **Framework Preset:** Vite
-    *   **Root Directory:** Click `Edit` and select `frontend`.
+    *   **Root Directory:** Click `Edit` and select `frontend`. **(CRITICAL STEP)**
     *   **Environment Variables:**
         *   `VITE_API_URL`: The URL of your deployed backend (see step 3). *For now, you can leave this blank and update it later.*
 4.  Click **Deploy**.
