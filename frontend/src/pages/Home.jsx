@@ -126,18 +126,6 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* Visual Update Confirmation Banner */}
-            <div className="glass-card bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 border-cyan-500/30 p-6 text-center animate-fade-in">
-                <div className="flex items-center justify-center gap-3">
-                    <div className="w-3 h-3 bg-cyan-400 rounded-full pulse-medical"></div>
-                    <p className="text-xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                        🎨 Premium Visual Design Active
-                    </p>
-                    <div className="w-3 h-3 bg-purple-400 rounded-full pulse-medical"></div>
-                </div>
-                <p className="text-gray-400 text-sm mt-2">Enhanced with 3D effects, smooth animations & glassmorphism</p>
-            </div>
-
             {/* Stats Cards with 3D Effect */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
