@@ -29,13 +29,13 @@ const Login = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-20 animate-fade-in">
-            <div className="glass-card p-8">
+        <div className="max-w-md mx-auto mt-8 sm:mt-12 md:mt-20 px-4 animate-fade-in">
+            <div className="glass-card p-6 sm:p-8">
                 <div className="text-center mb-8">
                     <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                         <LogIn className="w-6 h-6 text-blue-400" />
                     </div>
-                    <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
+                    <h1 className="text-xl sm:text-2xl font-bold text-white">Welcome Back</h1>
                     <p className="text-gray-400 mt-2">Sign in to access your predictions</p>
                 </div>
 

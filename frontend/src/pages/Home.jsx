@@ -102,16 +102,16 @@ const Home = () => {
     };
 
     return (
-        <div className="space-y-10 text-gray-100">
+        <div className="space-y-6 md:space-y-10 text-gray-100">
             {/* Hero Section */}
-            <div className="flex justify-between items-end relative">
-                <div className="space-y-3">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 md:gap-0 relative pt-16 md:pt-0">
+                <div className="space-y-2 md:space-y-3">
                     <div className="inline-block">
-                        <h1 className="text-5xl md:text-6xl font-bold mb-3 animate-fade-in">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3 animate-fade-in">
                             Dashboard Overview
                         </h1>
                     </div>
-                    <p className="text-gray-400 text-xl max-w-2xl animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                    <p className="text-gray-400 text-base sm:text-lg md:text-xl max-w-2xl animate-fade-in" style={{ animationDelay: '0.1s' }}>
                         Real-time health analytics and prediction metrics powered by AI
                     </p>
                 </div>
@@ -127,7 +127,7 @@ const Home = () => {
             </div>
 
             {/* Stats Cards with 3D Effect */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                 <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
                     <StatCard
                         icon={Users}
@@ -158,16 +158,16 @@ const Home = () => {
             </div>
 
             {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
 
                 {/* Left Column: Charts */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-4 md:space-y-6">
                     <div className="glass-card">
                         <h3 className="text-xl font-semibold mb-6 flex items-center space-x-2">
                             <Activity className="w-5 h-5 text-blue-400" />
                             <span>Disease Distribution</span>
                         </h3>
-                        <div className="h-64">
+                        <div className="h-56 sm:h-64 md:h-72">
                             <ResponsiveBar
                                 data={diseaseData}
                                 keys={['count']}
@@ -202,7 +202,7 @@ const Home = () => {
                             <TrendingUp className="w-5 h-5 text-purple-400" />
                             <span>Predictions Over Time</span>
                         </h3>
-                        <div className="h-64">
+                        <div className="h-64 sm:h-72 md:h-80">
                             <ResponsiveLine
                                 data={trendData}
                                 margin={{ top: 20, right: 20, bottom: 40, left: 40 }}

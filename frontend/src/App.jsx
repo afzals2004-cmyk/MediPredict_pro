@@ -39,7 +39,7 @@ function App() {
                   <div className="flex h-screen bg-gray-900 text-gray-100 font-sans antialiased overflow-hidden selection:bg-blue-500/30">
                     <Sidebar />
                     <main className="flex-1 overflow-y-auto relative z-10 w-full">
-                      <div className="p-4 md:p-8 max-w-7xl mx-auto">
+                      <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
                         <Suspense fallback={<LoadingScreen />}>
                           <Routes>
                             <Route path="/" element={<Home />} />
