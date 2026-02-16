@@ -12,6 +12,10 @@ load_dotenv()
 # Format: mysql+mysqlconnector://user:password@host/db_name
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
+# Auto-fix driver mismatch if user forgot to update env var
+if SQLALCHEMY_DATABASE_URL and "mysql+mysqlconnector" in SQLALCHEMY_DATABASE_URL:
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("mysql+mysqlconnector", "mysql+pymysql")
+
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
