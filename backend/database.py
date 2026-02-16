@@ -11,6 +11,7 @@ load_dotenv()
 # Database Connection
 # Format: mysql+mysqlconnector://user:password@host/db_name
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+print(f"DEBUG: Original DB URL starts with: {SQLALCHEMY_DATABASE_URL[:10] if SQLALCHEMY_DATABASE_URL else 'None'}")
 
 # Auto-fix driver mismatch if user forgot to update env var
 if SQLALCHEMY_DATABASE_URL and "mysql+mysqlconnector" in SQLALCHEMY_DATABASE_URL:
