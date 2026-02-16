@@ -20,7 +20,9 @@ const Login = () => {
             await login(data.email, data.password);
             navigate('/');
         } catch (err) {
-            setError('Invalid email or password');
+            console.error("Login Error:", err);
+            const errorMessage = err.response?.data?.detail || err.message || 'Invalid email or password';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
