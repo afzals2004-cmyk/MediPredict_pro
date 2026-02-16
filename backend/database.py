@@ -17,6 +17,10 @@ print(f"DEBUG: Original DB URL starts with: {SQLALCHEMY_DATABASE_URL[:10] if SQL
 if SQLALCHEMY_DATABASE_URL and "mysql+mysqlconnector" in SQLALCHEMY_DATABASE_URL:
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("mysql+mysqlconnector", "mysql+pymysql")
 
+# Auto-fix generic postgres protocol (Aiven/Heroku use postgres://, SQLAlchemy needs postgresql://)
+if SQLALCHEMY_DATABASE_URL and SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
