@@ -96,43 +96,59 @@ const Home = () => {
     };
 
     return (
-        <div className="space-y-8 animate-fade-in text-gray-100">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-2">
-                        Dashboard Overview
-                    </h1>
-                    <p className="text-gray-400 text-lg">Real-time health analytics and prediction metrics.</p>
+        <div className="space-y-10 text-gray-100">
+            {/* Hero Section */}
+            <div className="flex justify-between items-end relative">
+                <div className="space-y-3">
+                    <div className="inline-block">
+                        <h1 className="text-5xl md:text-6xl font-bold mb-3 animate-fade-in">
+                            Dashboard Overview
+                        </h1>
+                    </div>
+                    <p className="text-gray-400 text-xl max-w-2xl animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                        Real-time health analytics and prediction metrics powered by AI
+                    </p>
                 </div>
-                <div className="hidden md:block">
-                    <div className="glass px-4 py-2 rounded-lg text-sm text-gray-400">
-                        System Status: <span className="text-green-400 font-medium">Active</span>
+                <div className="hidden md:block animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <div className="glass px-6 py-3 rounded-2xl text-sm border-green-500/20">
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-400 rounded-full pulse-medical"></div>
+                            <span className="text-gray-400">System Status:</span>
+                            <span className="text-green-400 font-semibold">Active</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <StatCard
-                    icon={Users}
-                    label="Total Predictions"
-                    value={stats?.total_predictions || 0}
-                    color="blue"
-                    loading={loading}
-                />
-                <StatCard
-                    icon={Activity}
-                    label="Most Common"
-                    value={stats && stats.disease_breakdown ? Object.keys(stats.disease_breakdown).reduce((a, b) => stats.disease_breakdown[a] > stats.disease_breakdown[b] ? a : b) : '-'}
-                    color="green"
-                    loading={loading}
-                />
-                <StatCard
-                    icon={TrendingUp}
-                    label="Active Models"
-                    value="3"
-                    color="purple"
-                    loading={loading}
-                />
+            {/* Stats Cards with 3D Effect */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                    <StatCard
+                        icon={Users}
+                        label="Total Predictions"
+                        value={stats?.total_predictions || 0}
+                        color="cyan"
+                        loading={loading}
+                    />
+                </div>
+                <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <StatCard
+                        icon={Activity}
+                        label="Most Common"
+                        value={stats && stats.disease_breakdown ? Object.keys(stats.disease_breakdown).reduce((a, b) => stats.disease_breakdown[a] > stats.disease_breakdown[b] ? a : b) : '-'}
+                        color="blue"
+                        loading={loading}
+                    />
+                </div>
+                <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                    <StatCard
+                        icon={TrendingUp}
+                        label="Active Models"
+                        value="3"
+                        color="purple"
+                        loading={loading}
+                    />
+                </div>
             </div>
 
             {/* Main Content Grid */}
@@ -317,27 +333,53 @@ const Home = () => {
 
 const StatCard = ({ icon: Icon, label, value, color, loading }) => {
     const colorClasses = {
-        blue: { bg: 'bg-blue-500/20', text: 'text-blue-400' },
-        green: { bg: 'bg-green-500/20', text: 'text-green-400' },
-        purple: { bg: 'bg-purple-500/20', text: 'text-purple-400' },
-        red: { bg: 'bg-red-500/20', text: 'text-red-400' },
+        cyan: {
+            bg: 'from-cyan-500/20 to-cyan-600/10',
+            text: 'text-cyan-400',
+            glow: 'group-hover:shadow-cyan-500/50',
+            border: 'border-cyan-500/20'
+        },
+        blue: {
+            bg: 'from-blue-500/20 to-blue-600/10',
+            text: 'text-blue-400',
+            glow: 'group-hover:shadow-blue-500/50',
+            border: 'border-blue-500/20'
+        },
+        purple: {
+            bg: 'from-purple-500/20 to-purple-600/10',
+            text: 'text-purple-400',
+            glow: 'group-hover:shadow-purple-500/50',
+            border: 'border-purple-500/20'
+        },
+        red: {
+            bg: 'from-red-500/20 to-red-600/10',
+            text: 'text-red-400',
+            glow: 'group-hover:shadow-red-500/50',
+            border: 'border-red-500/20'
+        },
     };
 
-    const styles = colorClasses[color] || colorClasses.blue;
+    const styles = colorClasses[color] || colorClasses.cyan;
 
     return (
-        <div className="glass-card flex items-center space-x-4">
-            <div className={`p-4 rounded-xl ${styles.bg} ${styles.text}`}>
-                <Icon className="w-8 h-8" />
+        <div className="stat-card card-3d group relative overflow-hidden">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-5">
+                    <div className={`p-4 rounded-2xl bg-gradient-to-br ${styles.bg} ${styles.text} icon-glow transition-all duration-300 border ${styles.border}`}>
+                        <Icon className="w-8 h-8" />
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-400 mb-1">{label}</p>
+                        {loading ? (
+                            <div className="h-9 w-28 bg-white/10 animate-pulse rounded-lg mt-1"></div>
+                        ) : (
+                            <p className="text-4xl font-bold text-white tracking-tight">{value}</p>
+                        )}
+                    </div>
+                </div>
             </div>
-            <div>
-                <p className="text-sm text-gray-400">{label}</p>
-                {loading ? (
-                    <div className="h-8 w-24 bg-white/10 animate-pulse rounded mt-1"></div>
-                ) : (
-                    <p className="text-3xl font-bold text-white">{value}</p>
-                )}
-            </div>
+            {/* Hover gradient overlay */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${styles.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}></div>
         </div>
     );
 };
